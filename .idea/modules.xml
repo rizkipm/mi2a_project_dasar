@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/mi2a_project_dasar.iml" filepath="$PROJECT_DIR$/mi2a_project_dasar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/mi2a_project_dasar_android.iml" filepath="$PROJECT_DIR$/android/mi2a_project_dasar_android.iml" />
+    </modules>
+  </component>
+</project>
