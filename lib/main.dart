@@ -54,7 +54,7 @@ class PageUtama extends StatelessWidget {
       ),
 
       body: Center(
-        child: Text('Selamat Datang di Apps Pertama MI 2A'),
+        child: Text('Selamat Datang di Apps Pertama MI 2A by Rizki'),
       ),
     );
   }
