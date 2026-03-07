@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mi2a_project_dasar/pages/page_listview.dart';
+import 'package:mi2a_project_dasar/pages/page_row_column.dart';
+import 'package:mi2a_project_dasar/pages/page_simple_form.dart';
+import 'package:mi2a_project_dasar/pages/page_stack.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,7 +58,43 @@ class PageUtama extends StatelessWidget {
       ),
 
       body: Center(
-        child: Text('Selamat Datang di Apps Pertama MI 2A by Rizki'),
+        child: Container(
+          width: double.infinity,//lebih flexibel
+            height: double.infinity,
+            margin: EdgeInsets.all(20),//atas kanan kiri bawah
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.lightBlue,
+              borderRadius: BorderRadius.circular(10)//bikin cekungan
+            ),
+            child: Column(
+              children: [
+
+                Text('Selamat Datang di Apps Pertama MI 2A by Rizki',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black
+
+                  ),
+                ),
+                SizedBox(height: 10,),
+                MaterialButton(
+                  color: Colors.orange,
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> PageRowColumn()));//dari class A ke class B
+                  },
+                  child: Text('Page Row'),
+                ),
+
+                //Latihan :  menghubungkan semua page yg ada
+                //Page column
+                //Page Listview
+                //Page Stack
+                //Page Simple Login Form
+
+              ],
+            )),
       ),
     );
   }
