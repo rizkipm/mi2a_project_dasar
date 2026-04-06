@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mi2a_project_dasar/pages/page_gambar1.dart';
+import 'package:mi2a_project_dasar/pages/page_gambar2.dart';
+import 'package:mi2a_project_dasar/pages/page_home_movie.dart';
 import 'package:mi2a_project_dasar/pages/page_listview.dart';
+import 'package:mi2a_project_dasar/pages/page_movie_grid.dart';
 import 'package:mi2a_project_dasar/pages/page_row_column.dart';
 import 'package:mi2a_project_dasar/pages/page_simple_form.dart';
 import 'package:mi2a_project_dasar/pages/page_stack.dart';
@@ -34,7 +38,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const PageSimpleForm(),
+      home: const PageMovieGrid(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -55,6 +59,43 @@ class PageUtama extends StatelessWidget {
 
         ),
         backgroundColor: Colors.deepOrange,
+      ),
+
+      drawer: SizedBox(
+        width: 250,
+        child: Drawer(
+          child: ListView(
+            children: [
+              UserAccountsDrawerHeader(accountName: Text("Rizki Syaputra"),
+                  accountEmail: Text("rizki@udacoding.com"),
+                  currentAccountPicture: CircleAvatar(
+                    radius: 55,
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.green,
+                      size: 65,
+                    ),
+                  ),
+              ),
+
+              ListTile(
+                title: Text("Photo 1"),
+                //on Tap
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> PageGambar1()));
+                },
+              ),
+
+              ListTile(
+                title: Text("Photo 2"),
+                //on Tap
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> PageGambar2()));
+                },
+              ),
+            ],
+          ),
+        ),
       ),
 
       body: Center(

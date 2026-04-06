@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mi2a_project_dasar/main.dart';
 
 class PageSimpleForm extends StatefulWidget {
   const PageSimpleForm({super.key});
@@ -79,6 +80,8 @@ class _PageSimpleFormState extends State<PageSimpleForm> {
               print("Username anda adalah "+ nUsername + " dan password : ${nPassword}");
 
               print("Anda klik button login");
+
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> PageUtama()));
 
               //Latihan
               //Pengecekan username dan password

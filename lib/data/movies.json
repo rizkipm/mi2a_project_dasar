@@ -1,0 +1,32 @@
+[
+  {
+    "title" : "Titip Bunda di Surga Mu",
+    "image" : "images/movie1.jpeg",
+    "desc" : "Ini adalah movie 1"
+  },
+  {
+    "title" : "Ahlan Singapore",
+    "image" : "images/movie2.jpeg",
+    "desc" : "Ini adalah movie 2"
+  },
+  {
+    "title" : "Aku Harus Mati",
+    "image" : "images/movie3.jpeg",
+    "desc" : "Ini adalah movie 3"
+  },
+  {
+    "title" : "Pelangi di Mars",
+    "image" : "images/movie4.jpeg",
+    "desc" : "Ini adalah movie 4"
+  },
+  {
+    "title" : "Esok Tanpa Ibu",
+    "image" : "images/movie5.jpeg",
+    "desc" : "Ini adalah movie 5"
+  },
+  {
+    "title" : "Na Willa",
+    "image" : "images/movie6.jpeg",
+    "desc" : "Ini adalah movie 6"
+  }
+]

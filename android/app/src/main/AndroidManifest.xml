@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="mi2a_project_dasar"
         android:name="${applicationName}"
