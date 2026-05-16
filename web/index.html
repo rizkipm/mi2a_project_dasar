@@ -28,6 +28,7 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHRlZFV-8y9HKZOj7T1lUEkSCWqJpOa4g"></script>
 
   <title>mi2a_project_dasar</title>
   <link rel="manifest" href="manifest.json">
@@ -42,5 +43,19 @@
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    {{flutter_js}}
+    {{flutter_build_config}}
+
+    _flutter.loader.load({
+      config: {
+        renderer: "html", // Memaksa penggunaan HTML renderer untuk mengatasi CORS
+      },
+      onEntrypointLoaded: async function(engineInitializer) {
+        const appRunner = await engineInitializer.initializeEngine();
+        await appRunner.runApp();
+      }
+    });
+  </script>
 </body>
 </html>
