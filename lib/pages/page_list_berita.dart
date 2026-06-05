@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mi2a_project_dasar/models/model_berita.dart';
+import 'package:mi2a_project_dasar/pages/page_login.dart';
 import 'package:mi2a_project_dasar/services/api_service.dart';
+
+import '../helper/session_manager.dart';
 
 class PageListBerita extends StatefulWidget {
   const PageListBerita({super.key});
@@ -18,11 +21,29 @@ class _PageListBeritaState extends State<PageListBerita> {
 
   final TextEditingController _searchCtrl = TextEditingController();
 
+  //variable penampung data login dari shared preferences
+  String? username;
+  String? email;
+  String? id;
+  String? tglDaftar;
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     futureBerita = ApiService.getDataBerita();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    final userData = await SessionManager.getUserSession();
+    setState(() {
+      username = userData['username'];
+      email = userData['email'];
+      id = userData['id'];
+      tglDaftar = userData['tgl_daftar'];
+    });
   }
 
   @override
@@ -48,8 +69,24 @@ class _PageListBeritaState extends State<PageListBerita> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('List Berita'),
+        //tampilkan usert anem jika berhasil login
+        title: Text(username != null ? "Selamat Datang $username" : "List Berita"),
         backgroundColor: Colors.lightBlue,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () {
+              setState(() {
+                //logout
+                SessionManager.logout();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => PageLogin()),
+                );
+              });
+            },
+          ),
+        ],
       ),
       body: FutureBuilder(
           future: futureBerita,

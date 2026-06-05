@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mi2a_project_dasar/helper/session_manager.dart';
 import 'package:mi2a_project_dasar/pages/page_gambar1.dart';
 import 'package:mi2a_project_dasar/pages/page_gambar2.dart';
 import 'package:mi2a_project_dasar/pages/page_home_movie.dart';
 import 'package:mi2a_project_dasar/pages/page_list_berita.dart';
 import 'package:mi2a_project_dasar/pages/page_listview.dart';
+import 'package:mi2a_project_dasar/pages/page_login.dart';
 import 'package:mi2a_project_dasar/pages/page_maps.dart';
 import 'package:mi2a_project_dasar/pages/page_movie_grid.dart';
 import 'package:mi2a_project_dasar/pages/page_photos_json.dart';
+import 'package:mi2a_project_dasar/pages/page_register.dart';
 import 'package:mi2a_project_dasar/pages/page_row_column.dart';
 import 'package:mi2a_project_dasar/pages/page_search_listview.dart';
 import 'package:mi2a_project_dasar/pages/page_simple_form.dart';
@@ -42,7 +45,31 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const PageListBerita(),
+      //gunakan future builder untuk cek session sebelum ke page home atau berita
+      home: FutureBuilder(future: SessionManager.isLogin(), builder: (context, snapshot){
+        //jika proses cek masih berjalan, tampilkan loading
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return Scaffold(body: Center(child: CircularProgressIndicator(),),);
+        }
+        //jika sudah login, ambil data user dan arahkan ke page home
+        if(snapshot.hasData && snapshot.data == true){
+          return FutureBuilder<Map<String, String?>> (
+              future: SessionManager.getUserSession(),
+              builder: (context, userSnapshot){
+                if(userSnapshot.connectionState == ConnectionState.waiting){
+                  return Scaffold(body: Center(child: CircularProgressIndicator(),),);
+                }
+                //karena data dari shared preferences berupa string,
+                //kita cast atau convert ke map untuk bisa ambil data
+                final userData = Map<String, dynamic>.from(userSnapshot.data ?? {});
+                return PageListBerita();
+              }
+          );
+        }
+
+        //jika belum login, tampilkan page login
+        return PageLogin();
+      }),
       debugShowCheckedModeBanner: false,
     );
   }
