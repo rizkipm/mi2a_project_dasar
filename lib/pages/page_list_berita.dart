@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mi2a_project_dasar/models/model_berita.dart';
 import 'package:mi2a_project_dasar/pages/page_login.dart';
+// Tambahkan import ke page insert berita di bawah ini (sesuaikan path folder jika berbeda)
+import 'package:mi2a_project_dasar/pages/page_insert_berita.dart';
 import 'package:mi2a_project_dasar/services/api_service.dart';
 
 import '../helper/session_manager.dart';
@@ -30,7 +32,6 @@ class _PageListBeritaState extends State<PageListBerita> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     futureBerita = ApiService.getDataBerita();
     _loadUserData();
@@ -46,11 +47,18 @@ class _PageListBeritaState extends State<PageListBerita> {
     });
   }
 
+  // Fungsi untuk refresh data secara manual atau otomatis setelah insert
+  void _refreshData() {
+    setState(() {
+      _allBerita.clear();
+      futureBerita = ApiService.getDataBerita();
+    });
+  }
+
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     _searchCtrl.dispose();
+    super.dispose();
   }
 
   void _onSearchBar(String query){
@@ -69,7 +77,6 @@ class _PageListBeritaState extends State<PageListBerita> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //tampilkan usert anem jika berhasil login
         title: Text(username != null ? "Selamat Datang $username" : "List Berita"),
         backgroundColor: Colors.lightBlue,
         actions: [
@@ -77,7 +84,6 @@ class _PageListBeritaState extends State<PageListBerita> {
             icon: const Icon(Icons.exit_to_app),
             onPressed: () {
               setState(() {
-                //logout
                 SessionManager.logout();
                 Navigator.pushReplacement(
                   context,
@@ -142,7 +148,7 @@ class _PageListBeritaState extends State<PageListBerita> {
                 ),
 
                 if(_searchCtrl.text.isNotEmpty)
-                  Padding(padding: EdgeInsets.only(left: 16, bottom: 8),
+                  Padding(padding: const EdgeInsets.only(left: 16, bottom: 8),
                     child: Text("${_filteredBerita.length} berita ditemukan"),
                   ),
                 Expanded(
@@ -151,10 +157,7 @@ class _PageListBeritaState extends State<PageListBerita> {
                       : RefreshIndicator(
                     color: Colors.green,
                     onRefresh: () async {
-                      setState(() {
-                        _allBerita.clear();
-                        futureBerita = ApiService.getDataBerita();
-                      });
+                      _refreshData();
                     },
                     child: ListView.builder(
                       padding: const EdgeInsets.symmetric(
@@ -171,6 +174,21 @@ class _PageListBeritaState extends State<PageListBerita> {
               ],
             );
           }),
+
+      // ================= TAMBAHAN FLOATING ACTION BUTTON =================
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.lightBlue,
+        child: const Icon(Icons.add, color: Colors.white),
+        onPressed: () async {
+          // Navigasi ke PageInsertBerita dan tunggu sampai user kembali
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PageInsertBerita()),
+          );
+          // Begitu kembali dari halaman input, panggil fungsi refresh list data
+          _refreshData();
+        },
+      ),
     );
   }
 
@@ -178,16 +196,9 @@ class _PageListBeritaState extends State<PageListBerita> {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 3,
-      margin: EdgeInsetsDirectional.only(bottom: 12),
+      margin: const EdgeInsetsDirectional.only(bottom: 12),
       child: InkWell(
-        onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => DetailBerita(berita: berita),
-          //   ),
-          // );
-        },
+        onTap: () {},
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -197,15 +208,35 @@ class _PageListBeritaState extends State<PageListBerita> {
                 topRight: Radius.circular(10),
               ),
               child: Image.network(
-
-                "http://10.20.27.87/BERITA_API/berita_api/gambar/${berita.gbrBerita}",
+                "http://10.11.17.54/berita_api/gambar/${berita.gbrBerita}",
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                // Tambahkan penanganan error di bawah ini
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 200,
+                    width: double.infinity,
+                    color: Colors.grey.shade300,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.broken_image, color: Colors.grey, size: 50),
+                        SizedBox(height: 8),
+                        Text("Gagal memuat gambar (CORS/RTO)", style: TextStyle(color: Colors.grey)),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
-            Padding(padding: EdgeInsets.all(10),
-              child: Text(berita.judulBerita, maxLines: 2,),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                berita.judulBerita,
+                maxLines: 2,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             )
           ],
         ),
